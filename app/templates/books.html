@@ -1,0 +1,99 @@
+{% extends "index.html" %}
+
+{% block head %} <title>Biblioteka 2.0</title> {% endblock %}
+
+{% block body %}
+<a name="top"></a>
+<h1> Biblioteka 2.0</h1>
+<div class="row">
+    <!-- Adding section -->
+    <div class="column1">
+        <div class="adding_panel">
+            <div class="book_addind">
+                <h3>Nowa Książka</h3>
+                <form action="/book/" method="post">
+                    <p><input type="text" name="title" placeholder="Tytuł..."></p>
+                    <p><input type="text" name="genre" placeholder="Rodzaj..."></p>
+                    <p><input type="text" name="pages" placeholder="Strony..."></p>
+                    <input type="submit" value="Dodaj">
+                </form>
+            </div>
+            <div class="author_adding">
+                <h3>Nowy autor</h3>
+                <form action="/author/" method="post">
+                    <p><input type="text" name="name" placeholder="Imię"></p>
+                    <p><input type="text" name="surname" placeholder="Nazwisko"></p>
+                    <p><input type="text" name="birth" placeholder="Data urodzenia"></p>
+                    <input type="submit" value="Dodaj">
+                </form>
+            </div>
+        </div><br><br>
+
+        <!-- Assign section -->
+        <div class="assign_panel">
+            <div class="assign_author">
+                <h3>Przydziel Autora do książki</h3>
+                <form action="/assign/" method="post">
+                    <p><input type="text" name="author_id" placeholder="ID Autora..."></p>
+                    <p><input type="text" name="books_id" placeholder="ID Książki..."></p>
+                    <input type="submit" value="Przydziel">
+                </form>
+                <table class="ids">
+                    <tr>
+                        <th>Autor</th>
+                        <th>ID Autora</th>
+                    </tr>
+                    {% for author in authors %}
+                    <tr>
+                        <td>{{ author }}</td>
+                        <td>{{ author.id }}</td>
+                    </tr>
+                    {% endfor %}
+
+                    <tr>
+                        <th>Książka</th>
+                        <th>ID książki</th>
+                        {% for book in books %}
+                    </tr>
+                    <td>{{ book }}</td>
+                    <td>{{ book.id }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Book Shelf section -->
+    <div class="column2">
+        <div class="book_disply">
+            <h2>Pułka z książkami</h2>
+            <h4>Jeżeli tytuł książki <span style="text-decoration: line-through;">jest przekreślony</span>. <br>Książki nie ma na stanie.
+            </h4>
+            <table>
+                <tr>
+                    <th>Autor</th>
+                    <th>Książka</th>
+                    <th>Stan magazynowy</th>
+                </tr>
+                {% for book in books %}
+                <tr>
+                    <td>{{ book.author }}</td>
+                    <td>{% if book.stock %} <strike> {% endif %}{{ book.title }} {% if book.stock %} </strike>{%
+                        endif %}</td>
+                    <td>
+                        <button type="button" onclick='window.location.href="/in_stock/{{ book.id }}"'>Na stanie
+                        </button>
+                        <br>
+                        <button type="button" onclick='window.location.href="/out_stock/{{ book.id }}"'>Brak na stanie </button>
+                        <br>
+                        <button type="button" onclick='window.location.href="delete/{{ book.id }}"'>Usuń książkę
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+</div>
+{% endblock %}
